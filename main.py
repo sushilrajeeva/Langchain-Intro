@@ -1,8 +1,21 @@
+import warnings
+# Suppress deprecation warnings
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 import openai
 from langchain_core.prompts import PromptTemplate
-from langchain_openai import OpenAI
-
+from langchain_openai import OpenAI, ChatOpenAI
+from langchain.chains.sequential import SequentialChain
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
 from jproperties import Properties
+from operator import itemgetter
+
+
+
+from langchain.agents import AgentType, initialize_agent, load_tools
+
+
 
 # setting up properties
 configs = Properties()
@@ -52,10 +65,9 @@ answer2 = llm_chain.invoke(question2).strip()
 display(question2, answer2)
 
 
-
-
-
-
-
-
-
+# Using agents to feed data to llm 
+tools = load_tools(["wikipedia", "llm-math"], llm=llm)
+agent = initialize_agent(tools, llm=llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION)
+question3 = "How old will Virat Kohli be in 2030?"
+answer3 = agent.run(question3)
+display(question3, answer3)
