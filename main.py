@@ -67,7 +67,7 @@ display(question2, answer2)
 
 # Using agents to feed data to llm 
 tools = load_tools(["wikipedia", "llm-math"], llm=llm)
-agent = initialize_agent(tools, llm=llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION)
+agent = initialize_agent(tools, llm=llm, agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose = True)
 question3 = "How old will Virat Kohli be in 2030?"
 answer3 = agent.run(question3)
 display(question3, answer3)
